@@ -1,60 +1,49 @@
-CREATE TABLE SALES (
-    Sale_ID INT PRIMARY KEY,
-    Product_ID INT,
-    Customer_ID INT,
-    Quantity INT,
-    Unit_Price DECIMAL(10,2),
-    Sale_Date DATE
+USE dbms_assignment;
+
+
+
+CREATE TABLE DEPARTMENT2 (
+    DeptID INT PRIMARY KEY,
+    DeptName VARCHAR(50) NOT NULL UNIQUE
 );
 
-INSERT INTO SALES VALUES
-(1, 101, 201, 5, 2000, '2026-01-10'),
-(2, 102, 202, 3, 3000, '2026-01-11'),
-(3, 101, 203, 4, 2000, '2026-01-12'),
-(4, 103, 204, 6, 1500, '2026-01-13'),
-(5, 102, 205, 2, 3000, '2026-01-14'),
-(6, 101, 206, 7, 2000, '2026-01-15');
 
 
-SELECT Product_ID, SUM(Quantity) AS Total_Quantity
-FROM SALES
-GROUP BY Product_ID;
+CREATE TABLE STUDENT (
+    SID INT PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL DEFAULT 'Unknown',
+    DOB DATE CHECK (DOB >= '1900-01-01'),
+    DeptID INT DEFAULT 1,
+
+    FOREIGN KEY (DeptID)
+    REFERENCES DEPARTMENT2(DeptID)
+);
 
 
-SELECT Product_ID, COUNT(Sale_ID) AS Total_Sales
-FROM SALES
-GROUP BY Product_ID;
+INSERT INTO DEPARTMENT2 VALUES
+(1, 'CSE'),
+(2, 'ECE'),
+(3, 'IT'),
+(4, 'MECH');
 
 
-SELECT Product_ID, AVG(Unit_Price) AS Average_Price
-FROM SALES
-GROUP BY Product_ID;
+INSERT INTO STUDENT VALUES
+(101, 'Arun', '2006-05-12', 1),
+(102, 'Rahul', '2005-08-20', 2),
+(103, 'Priya', '2006-01-15', 1),
+(104, 'Kiran', '2005-10-10', 3),
+(105, 'Sneha', '2006-03-25', 4);
 
 
-SELECT Product_ID, MAX(Unit_Price) AS Maximum_Price
-FROM SALES
-GROUP BY Product_ID;
+SELECT * FROM DEPARTMENT2;
 
 
-SELECT Product_ID, MIN(Unit_Price) AS Minimum_Price
-FROM SALES
-GROUP BY Product_ID;
+SELECT * FROM STUDENT;
 
 
-SELECT Product_ID,
-       SUM(Quantity * Unit_Price) AS Total_Revenue
-FROM SALES
-GROUP BY Product_ID;
+
+INSERT INTO STUDENT (SID, DOB)
+VALUES (106, '2006-07-15');
 
 
-SELECT Product_ID,
-       SUM(Quantity * Unit_Price) AS Total_Revenue
-FROM SALES
-GROUP BY Product_ID
-HAVING SUM(Quantity * Unit_Price) > 10000;
-
-
-SELECT Product_ID, COUNT(Sale_ID) AS Total_Sales
-FROM SALES
-GROUP BY Product_ID
-HAVING COUNT(Sale_ID) > 2;
+SELECT * FROM STUDENT;
